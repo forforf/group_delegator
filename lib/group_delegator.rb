@@ -10,3 +10,8 @@ require 'group_delegator/group_delegator_instances'
 #class to use if one is interested in proxy a complete class
 #- including class methods and instantiation
 require 'group_delegator/group_delegator_klasses'
+
+#for the lazy (like me) set a group delegator class to a default
+#so people don't have to read docs
+class GroupDelegator < GroupDelegatorKlasses
+end
