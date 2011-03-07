@@ -31,20 +31,20 @@ class GroupDelegatorKlasses
   end #class<<self
   
   #initializing class instance variables
-  GroupDelegatorKlasses.__set_source_classes([])
+  self.__set_source_classes([])
   
   def self.method_missing(m, *args, &block)
-    if GroupDelegatorKlasses.__all_class_methods.include? m
-      resp = GroupDelegatorKlasses.__class_source_group.forward(m, *args, &block)
+    if self.__all_class_methods.include? m
+      resp = self.__class_source_group.forward(m, *args, &block)
       else
-      raise NoMethodError, "GroupDelegatorKlasses can't find the class method #{m} in any of its sources"
+      raise NoMethodError, "#{self.class} can't find the class method #{m} in any of its sources"
     end
   end
   
   def initialize(*args)
-    concurrency_model = GroupDelegatorKlasses.__concurrency_model
-    raise "No Source Classes set" unless GroupDelegatorKlasses.__source_classes.size > 0
-    proxied_objs = GroupDelegatorKlasses.__source_classes.map {|klass| klass.new(*args) }
+    concurrency_model = self.__concurrency_model
+    raise "No Source Classes set" unless self.__source_classes.size > 0
+    proxied_objs = self.__source_classes.map {|klass| klass.new(*args) }
     sources_data = SourceHelper.set_sources_data(proxied_objs)
     @source_obj_methods = sources_data[:source_methods]
     @source_objects = sources_data[:source_objs]
@@ -55,7 +55,7 @@ class GroupDelegatorKlasses
     if @source_obj_methods.include? m
       resp = @instance_source_group.forward(m, *args, &block)
     else
-      raise NoMethodError, "GroupDelegatorKlasses object can't find the method #{m} in any of its sources"
+      raise NoMethodError, "#{self.class} object can't find the method #{m} in any of its sources"
     end
   end
 end 
