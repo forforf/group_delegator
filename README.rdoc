@@ -2,6 +2,11 @@
 
 Description goes here.
 
+= TODO
+* add specs for GroupDelegatorKlasses
+* add new Delgator -> GroupMetaDelegator that passes all methods through to sources (including methods from Object and Module)
+
+
 == Contributing to group_delegator
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
