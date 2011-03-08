@@ -3,8 +3,8 @@
 Description goes here.
 
 = TODO
-* add specs for GroupDelegatorKlasses
-* add new Delgator -> GroupMetaDelegator that passes all methods through to sources (including methods from Object and Module)
+* add new Delgator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably _gd_[method name>
+]
 
 
 == Contributing to group_delegator

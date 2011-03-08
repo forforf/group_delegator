@@ -15,3 +15,9 @@ require 'group_delegator/group_delegator_klasses'
 #so people don't have to read docs
 class GroupDelegator < GroupDelegatorKlasses
 end
+
+#Also, here's the basic version with a simple name
+#This one only deals with instantiated objects (so
+#no class variables)
+class SimpleGroupDelegator < GroupDelegatorInstances
+end
