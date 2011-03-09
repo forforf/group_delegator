@@ -38,7 +38,6 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
     #then make it uppercase
     map_upcase = map_string.map{|t| t.upcase}
 
-  * Output
     #proxy output
     puts "Proxy: #{proxy_integers.values.inspect}"
     puts "Proxy: #{proxy_string.values.inspect}"
@@ -55,7 +54,6 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
     #=> Map: ["1 times", "2 times", "3 times"]
     #=> Map: ["1 TIMES", "2 TIMES", "3 TIMES"]
  
-    #but GroupDelegator is much more powerful than just an iterative map.
 
 = TODO
 * add new Delgator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably _gd_[method name]
