@@ -54,11 +54,12 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
     #=> Map: ["1 times", "2 times", "3 times"]
     #=> Map: ["1 TIMES", "2 TIMES", "3 TIMES"]
  
-* Although we get to the same point at the end, the route getting there is quite a bit different between the two approaches. Also, I use this example, not because it illustrates how GroupDelegator is useful, but to relate its behavior to something relatively common. Things to notice:
+* Although we get to the same point at the end, the route getting there is quite a bit different between the two approaches. Also, I use this example, not because it illustrates how GroupDelegator is useful, but to relate its behavior to something relatively common.
+  Things to notice:
   proxy_all = SimpleGroupDelegator.new(proxy_numbers)
-  - What this is saying is to use each object in the proxy_numbers array as the object to receive the method calls sent to the proxy_all object. Any method on <i>proxy_all</i> is applied to each object in <i>proxy_numbers</i>, but each object does not have to responsd to the method (as long as at least one does).
+  What this is saying is to use each object in the proxy_numbers array as the object to receive the method calls sent to the proxy_all object. Any method on <i>proxy_all</i> is applied to each object in <i>proxy_numbers</i>, but each object does not have to responsd to the method (as long as at least one does).
   proxy_all.to_i
-  - Apply the method :to_i to all members of proxy_numbers. Which brings us to one of the differences. Say our original array was:
+  Apply the method :to_i to all members of proxy_numbers. Which brings us to one of the differences. Say our original array was:
     ["1", "2", "3", :a, "b", "cat"]
   With SimpleDelegator, calling :to_i results in a hash, and the values of that hash would be:
     [1, 2, 3, 0, 0]
