@@ -56,15 +56,15 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
  
 * Although we get to the same point at the end, the route getting there is quite a bit different between the two approaches. Also, I use this example, not because it illustrates how GroupDelegator is useful, but to relate its behavior to something relatively common.
   Things to notice:
-  proxy_all = SimpleGroupDelegator.new(proxy_numbers)
+    proxy_all = SimpleGroupDelegator.new(proxy_numbers)
   What this is saying is to use each object in the proxy_numbers array as the object to receive the method calls sent to the proxy_all object. Any method on <i>proxy_all</i> is applied to each object in <i>proxy_numbers</i>, but each object does not have to responsd to the method (as long as at least one does).
-  proxy_all.to_i
+    proxy_all.to_i
   Apply the method :to_i to all members of proxy_numbers. Which brings us to one of the differences. Say our original array was:
     ["1", "2", "3", :a, "b", "cat"]
   With SimpleDelegator, calling :to_i results in a hash, and the values of that hash would be:
     [1, 2, 3, 0, 0]
   While with Array#map, the result is a NoMetodError
-  - What is the hash then? It's the source object as the key, with the method result as the value, so :to_i on a SimpleDelegator object returns
+  What is the hash then? It's the source object as the key, with the method result as the value, so :to_i on a SimpleDelegator object returns
     ["1" => 1, "2" => 2, "3" => 3, "b" => 0, "cat" => 0]
   Notice :a is not in the hash.  That's because it errored out. Errors are ignored by GroupDelegator (SimpleDelegator is a type of GroupDelegator). Sure you could insert a begin/rescue clause into your map block, but that would ugly things up quite a bit.
 
