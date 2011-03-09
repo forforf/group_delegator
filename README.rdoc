@@ -100,7 +100,7 @@ As shown above Object#tap can do this, but perhaps a better solution would be:
 
 == Examples on Use (until I can get a full fledged tutorial written up)
 Several examples (included those referenced here) are in the examples directory.
-There's also the specs.
+There's also the specs. Some of the examples and specs have benchmarks showing the differences between the various concurrency models.
 
 
 == Contributing to group_delegator
