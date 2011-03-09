@@ -21,8 +21,6 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
     puts "mapped to_i: #{mapped_integers.inspect}"
 
 * Let's compare
-  * Group Delegator proxying
-    
     #proxy by group_delegator
     proxy_numbers = ["1", "2", "3"]
     proxy_all = SimpleGroupDelegator.new(proxy_numbers)
@@ -31,8 +29,6 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
     proxy_string = proxy_all<< " times"
     #then make it uppercase
     proxy_upcase = proxy_all.upcase
-
-  * Array#map
 
     #tranform collection by Array#map
     map_numbers =["1", "2", "3"]
