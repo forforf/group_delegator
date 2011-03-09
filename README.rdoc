@@ -89,7 +89,7 @@ So up to now I've made it look like GroupDelegator is just a slightly better alt
 * Class level delegation. The SimpleGroupDelegator class works on objects, but if you need to proxy an entire class, you can use the GroupDelegator class.  Calling #new on the proxy class instantiates an object from each of the proxied classes, and returns a proxy_object. That proxy object then works similarly to a SimpleGroupDelegator object.
 
 == Future Plans
-* add new Delgator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably _gd_[method name])
+* add new Delegator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably # __gd__method_name)
 * add a method that returns the underlying objects.
   proxy_all.tap {|s| s}
   #=> {obj1 => obj1, obj2 => obj2, etc}
