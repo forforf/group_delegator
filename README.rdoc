@@ -1,11 +1,67 @@
 = group_delegator
 
-Description goes here.
+GroupDelegator provides a way to wrap a collection of objects and send method calls to the entire collection.
+* Simple case: Bind a collection of existing objects to a common wrapper that will proxy the method calls to each object
+  Example:
+    require 'group_delegator'
+
+    proxy_numbers = ["1", "2", "3"]
+    proxy_all = SimpleGroupDelegator.new(proxy_numbers)
+    proxy_data = proxy_all.to_i
+      #=> {"1"=>1, "2"=>2, "3"=>3}
+
+    #or if you just wanted the integers
+    proxy_integers = proxy_all.to_i
+      #=> [1, 2, 3]
+    puts "proxied to_i: #{proxy_integers.values.inspect}"
+
+* Why not just use Array#map to do the same transformation? i.e.:
+    map_numbers =["1", "2", "3"]
+    mapped_integers = map_numbers.map{|t| t.to_i}
+    puts "mapped to_i: #{mapped_integers.inspect}"
+
+* Let's compare
+  * Group Delegator proxying
+    proxy_numbers = ["1", "2", "3"]
+    proxy_all = SimpleGroupDelegator.new(proxy_numbers)
+    proxy_integers = proxy_all.to_i
+    #lets add the string "times" to each number
+    proxy_string = proxy_all<< " times"
+    #then make it uppercase
+    proxy_upcase = proxy_all.upcase
+
+  * Array#map
+    map_numbers =["1", "2", "3"]
+    map_integers = map_numbers.map{|t| t.to_i}
+    #lets add the string "times" to each number
+    map_string = map_numbers.map{|t| t << " times"}
+    #then make it uppercase
+    map_upcase = map_string.map{|t| t.upcase}
+
+  * Output
+    #proxy output
+    puts "Proxy: #{proxy_integers.values.inspect}"
+    puts "Proxy: #{proxy_string.values.inspect}"
+    puts "Proxy: #{proxy_upcase.values.inspect}"
+    #=> Proxy: [1, 2, 3]
+    #=> Proxy: ["1 times", "2 times", "3 times"]
+    #=> Proxy: ["1 TIMES", "2 TIMES", "3 TIMES"]
+
+    #map output
+    puts "Map: #{map_integers.inspect}"
+    puts "Map: #{map_string.inspect}"
+    puts "Map: #{map_upcase.inspect}"
+    #=> Map: [1, 2, 3]
+    #=> Map: ["1 times", "2 times", "3 times"]
+    #=> Map: ["1 TIMES", "2 TIMES", "3 TIMES"]
+ 
+    #but GroupDelegator is much more powerful than just an iterative map.
 
 = TODO
-* add new Delgator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably _gd_[method name>
-]
+* add new Delgator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably _gd_[method name]
 
+= Examples on Use (until I can get a full fledged tutorial written up)
+  
 
 == Contributing to group_delegator
  
