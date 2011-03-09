@@ -20,7 +20,7 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
     mapped_integers = map_numbers.map{|t| t.to_i}
     puts "mapped to_i: #{mapped_integers.inspect}"
 
-* Let's compare
+* Let's compare the two approaches in a bit of detail
     #proxy by group_delegator
     proxy_numbers = ["1", "2", "3"]
     proxy_all = SimpleGroupDelegator.new(proxy_numbers)
@@ -54,12 +54,49 @@ GroupDelegator provides a way to wrap a collection of objects and send method ca
     #=> Map: ["1 times", "2 times", "3 times"]
     #=> Map: ["1 TIMES", "2 TIMES", "3 TIMES"]
  
+* Although we get to the same point at the end, the route getting there is quite a bit different between the two approaches. Also, I use this example, not because it illustrates how GroupDelegator is useful, but to relate its behavior to something relatively common. Things to notice:
+  proxy_all = SimpleGroupDelegator.new(proxy_numbers)
+  - What this is saying is to use each object in the proxy_numbers array as the object to receive the method calls sent to the proxy_all object. Any method on <i>proxy_all</i> is applied to each object in <i>proxy_numbers</i>, but each object does not have to responsd to the method (as long as at least one does).
+  proxy_all.to_i
+  - Apply the method :to_i to all members of proxy_numbers. Which brings us to one of the differences. Say our original array was:
+    ["1", "2", "3", :a, "b", "cat"]
+  With SimpleDelegator, calling :to_i results in a hash, and the values of that hash would be:
+    [1, 2, 3, 0, 0]
+  While with Array#map, the result is a NoMetodError
+  - What is the hash then? It's the source object as the key, with the method result as the value, so :to_i on a SimpleDelegator object returns
+    ["1" => 1, "2" => 2, "3" => 3, "b" => 0, "cat" => 0]
+  Notice :a is not in the hash.  That's because it errored out. Errors are ignored by GroupDelegator (SimpleDelegator is a type of GroupDelegator). Sure you could insert a begin/rescue clause into your map block, but that would ugly things up quite a bit.
 
-= TODO
-* add new Delgator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably _gd_[method name]
+* If we are able to work around troublesome objects, it might be useful to identify them
+
+    #Group Delegator proxying
+    proxy_numbers = ["1", "2", "3", :a, "b", "cat"]
+    proxy_all = SimpleGroupDelegator.new(proxy_numbers)
+    proxy_integers = proxy_all.to_i
+
+    #find trouble makers
+    trouble_makers = proxy_numbers - proxy_integers.keys
+    #=> [:a]
+
+= Beyond the basics
+So up to now I've made it look like GroupDelegator is just a slightly better alternative to Array#map.  But there's some more advanced things that GroupDelegator can do.  For example
+* Multiple Concurrenty models. The default model is to iterate over object in the collection that's being proxied, but also supported is to spawn a thread for each object, resulting in each method being called to each object concurrently. Especially useful for method calls that might take some time (like http requests). Additionally, it may be useful in certain cases that all is needed is a single response from any object. That too is supported. Finally, it's possible to pass your own block into a GroupDelegator if some other concurrency model is required. 
+* Class level delegation. The SimpleGroupDelegator class works on objects, but if you need to proxy an entire class, you can use the GroupDelegator class.  Calling #new on the proxy class instantiates an object from each of the proxied classes, and returns a proxy_object. That proxy object then works similarly to a SimpleGroupDelegator object.
+
+= Future Plans
+* add new Delgator -> GroupMetaDelegator that passes *all* methods through to sources (including methods from Object and Module). This requires remapping existing default methods to an alias (probably _gd_[method name])
+* add a method that returns the underlying objects.
+  proxy_all.tap {|s| s}
+  #=> {obj1 => obj1, obj2 => obj2, etc}
+As shown above Object#tap can do this, but perhaps a better solution would be:
+  proxy_all.self  
+  #=> [obj1, obj2, etc]
+* Consider adding a helper method for finding objects that didn't respond to a method.  I'm not quite sure how to do this though (or even if its possible). Note, I don't want a #respond_to? clone, and re-doing the method isn't a good solution since the ojbect state may have changed (affecting its ability to respond to methods)
 
 = Examples on Use (until I can get a full fledged tutorial written up)
-  
+Several examples (included those referenced here) are in the examples directory.
+There's also the specs.
+
 
 == Contributing to group_delegator
  
