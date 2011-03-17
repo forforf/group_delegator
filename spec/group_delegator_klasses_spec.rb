@@ -82,14 +82,38 @@ shared_examples_for "instance delegator - entire collection" do
   it "passes methods to the underlying instances of the group" do
     group_obj.common_method.values == [:a, :b, :c]
   end
+
+  #tests __objs_by_class method
+  it "can access the instances via their class names" do
+    objs = group_obj.common_method.keys
+    objs.each do |obj|
+      obj_class = obj.class
+      this_objs = group_obj.__objs_by_class[obj_class]
+      raise "Unexpected size of #{this_objs.size} != 1" unless this_objs.size == 1
+      this_obj = this_objs.first if this_objs.size == 1
+      this_obj.should == obj
+    end
+  end
 end
 
 shared_examples_for "instance delegator - first response" do
-  it "passes methods to the first responing instance" do
+  it "passes methods to the first responding instance" do
         expected_result_set = [:a, :b, :c]
         result = group_obj.common_method
         result_value = result.values.first
         expected_result_set.should include result_value
+  end
+  #tests __objs_by_class method
+  it "can access the instances via their class names" do
+    objs = group_obj.common_method.keys #its only one object though
+    objs.size.should == 1
+    objs.each do |obj|
+      obj_class = obj.class
+      this_objs = group_obj.__objs_by_class[obj_class]
+      raise "Unexpected size of #{this_objs.size} != 1" unless this_objs.size == 1
+      this_obj = this_objs.first if this_objs.size == 1
+      this_obj.should == obj
+    end
   end
 end
 

@@ -27,7 +27,7 @@ class GroupDelegatorKlasses
     def __source_classes
       @sources
     end
-    
+
   end #class<<self
   
   #initializing class instance variables
@@ -40,12 +40,23 @@ class GroupDelegatorKlasses
       raise NoMethodError, "#{self.class} can't find the class method #{m} in any of its sources"
     end
   end
+
+  attr_reader :__objs_by_class
   
   def initialize(*args)
     #changed self to self.class
     concurrency_model = self.class.__concurrency_model
     raise "No Source Classes set" unless self.class.__source_classes.size > 0
-    proxied_objs = self.class.__source_classes.map {|klass| klass.new(*args) }
+    @__objs_by_class = {}
+    proxied_objs = []
+    self.class.__source_classes.each do |klass|
+      @__objs_by_class[klass] ||= []
+      proxied_obj = klass.new(*args)
+      @__objs_by_class[klass] << proxied_obj
+    end
+    proxied_objs = @__objs_by_class.values.flatten
+     #p proxied_objs
+     #proxied_objs = self.class.__source_classes.map {|klass| klass.new(*args) }
     sources_data = SourceHelper.set_sources_data(proxied_objs)
     @source_obj_methods = sources_data[:source_methods]
     @source_objects = sources_data[:source_objs]
