@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{group_delegator}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dave M"]
-  s.date = %q{2011-03-09}
+  s.date = %q{2011-03-17}
   s.description = %q{A wrapper that allows method calls to multiple objects with various concurrency models}
   s.email = %q{dmarti21@gmail.com}
   s.extra_rdoc_files = [
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "examples/find_troublemakers.rb",
     "examples/remote_component_update_sim.rb",
     "examples/search_examples_with_benchmarks.rb",
+    "group_delegator.gemspec",
     "lib/group_delegator.rb",
     "lib/group_delegator/group_delegator_instances.rb",
     "lib/group_delegator/group_delegator_klasses.rb",
