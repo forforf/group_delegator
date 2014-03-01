@@ -2,7 +2,7 @@
 progress:
  stable: 
    feature complete: may port to node
-ratings
+ratings:
   stable: 7
   useful: 7
   caliber: 8
